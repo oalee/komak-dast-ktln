@@ -58,6 +58,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVersion"
     implementation "androidx.datastore:datastore:$dataStoreVersion"
+    implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
