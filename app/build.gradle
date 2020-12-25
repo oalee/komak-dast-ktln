@@ -66,9 +66,9 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:$hiltKtxVersion"
 
 
-
-
-
+    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
+    implementation("com.squareup.moshi:moshi:$moshiVersion")
 
     // optional - Kotlin Extensions and Coroutines support for Room
     // optional - Test helpers

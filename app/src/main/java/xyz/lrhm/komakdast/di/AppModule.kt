@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.createDataStore
 import androidx.room.Room
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +42,9 @@ class AppModule  {
     @Singleton
     @Provides
     fun providesDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.createDataStore(  "settings")
+
+    @Singleton
+    @Provides
+    fun providesMoshi() = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
 }

@@ -50,5 +50,6 @@ ext {
     coroutinesVersion = "1.4.2"
     daggerVersion = "2.29.1"
     hiltKtxVersion = "1.0.0-alpha02"
+    moshiVersion = "1.11.0"
 
 }
