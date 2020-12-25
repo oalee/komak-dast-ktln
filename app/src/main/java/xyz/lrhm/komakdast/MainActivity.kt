@@ -28,5 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        viewModel.localUtil.parseLocalJson()
+
     }
 }
