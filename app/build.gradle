@@ -1,9 +1,10 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id 'dagger.hilt.android.plugin'
+
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
-    id 'dagger.hilt.android.plugin'
 
 }
 
@@ -12,11 +13,12 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "xyz.lrhm.komakdastkotlin"
+        applicationId "xyz.lrhm.komakdast"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,6 +49,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "androidx.core:core-ktx:$ktsVersion"
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
@@ -61,14 +64,18 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltKtxVersion"// When using Kotlin.
+
+
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltKtxVersion"
 
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     implementation("com.squareup.moshi:moshi:$moshiVersion")
+    implementation "androidx.multidex:multidex:$multidexVersion"
 
     // optional - Kotlin Extensions and Coroutines support for Room
     // optional - Test helpers

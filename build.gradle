@@ -51,5 +51,7 @@ ext {
     daggerVersion = "2.29.1"
     hiltKtxVersion = "1.0.0-alpha02"
     moshiVersion = "1.11.0"
+    multidexVersion = "2.0.1"
+
 
 }

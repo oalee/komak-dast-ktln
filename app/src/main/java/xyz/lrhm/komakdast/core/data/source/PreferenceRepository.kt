@@ -1,5 +1,6 @@
 package xyz.lrhm.komakdast.core.data.source
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.source.local.prefs.AppPreferences
 import xyz.lrhm.komakdast.core.data.source.local.prefs.PreferencesKeys
 import java.io.IOException
@@ -24,11 +26,11 @@ class PreferenceRepository @Inject constructor(private val dataStore: DataStore<
     private val _livePreferences: MutableLiveData<AppPreferences> = MutableLiveData()
     val livePreferences : LiveData<AppPreferences> = _livePreferences
 
-    val cachedPreferences: AppPreferences by lazy {
-        _prefs!!
-    }
+//    val cachedPreferences: AppPreferences by lazy {
+//        _prefs!!
+//    }
 
-    private var _prefs: AppPreferences? = null
+     var _prefs: AppPreferences? = null
     private val userPreferencesFlow = dataStore.data.catch { exception ->
         // dataStore.data throws an IOException when an error is encountered when reading data
         if (exception is IOException) {
@@ -45,12 +47,19 @@ class PreferenceRepository @Inject constructor(private val dataStore: DataStore<
     }
 
     init {
+
+        loadDataFromIO()
+        Timber.d("init preference repo")
+    }
+
+    fun loadDataFromIO(){
+        if(_prefs == null)
         CoroutineScope(Dispatchers.IO).launch {
+
             userPreferencesFlow.collect {
                 _prefs = it
-
                 CoroutineScope(Dispatchers.Main).launch {
-                _livePreferences.value = _prefs
+                    _livePreferences.value = _prefs
                 }
 
             }
