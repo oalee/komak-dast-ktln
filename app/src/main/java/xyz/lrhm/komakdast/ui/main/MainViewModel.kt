@@ -17,4 +17,7 @@ class MainViewModel @ViewModelInject constructor(val appRepository: AppRepositor
         Timber.d("init main view model")
     }
 
+
+
+
 }

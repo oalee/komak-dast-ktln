@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
 
-        Glide.with(this).load(R.drawable.background).centerCrop().into(binding.backgroundImageView)
+//        Glide.with(this).load(R.drawable.background).centerCrop().into(binding.backgroundImageView)
 
 //        viewModel.config.observe(this){
 //

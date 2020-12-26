@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-class AppRepository @Inject constructor( val localDataSource: LocalDataSource) {
+class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
 
     var cachedPackages: List<Package>? = null
     var cachedLessons: List<Lesson>? = null
@@ -29,12 +29,11 @@ class AppRepository @Inject constructor( val localDataSource: LocalDataSource) {
 
         return cachedPackages!!
     }
-    suspend fun insertPackage(p: Package, lessons: List<Lesson>){
+
+    suspend fun insertPackage(p: Package, lessons: List<Lesson>) {
 
         localDataSource.deleteLessonsForPackage(p.id)
 
-        for (l in lessons)
-            l.packageId = p.id
         localDataSource.insertPackage(p)
         localDataSource.insertLessons(lessons)
 

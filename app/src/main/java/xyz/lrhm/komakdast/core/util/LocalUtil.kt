@@ -3,20 +3,14 @@ package xyz.lrhm.komakdast.core.util
 import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.AppRepository
 import xyz.lrhm.komakdast.core.util.models.LocalLessonList
 import xyz.lrhm.komakdast.core.util.models.LocalPackageList
-import java.io.IOException
-import java.util.logging.Level
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 class LocalUtil @Inject constructor(
@@ -24,7 +18,6 @@ class LocalUtil @Inject constructor(
     @ApplicationContext val context: Context,
     val repo: AppRepository
 ) {
-
 
     suspend fun syncLocalPackagesWithDB() {
 
@@ -49,6 +42,10 @@ class LocalUtil @Inject constructor(
     suspend fun insertPackage(p: Package) {
 
         val levels = parseLevels(p.id)
+        for (l in levels) {
+            l.packageId = p.id
+        }
+
         repo.insertPackage(p, levels)
 
 
