@@ -52,6 +52,8 @@ ext {
     hiltKtxVersion = "1.0.0-alpha02"
     moshiVersion = "1.11.0"
     multidexVersion = "2.0.1"
+    glideVersion = "4.11.0"
+    timberVersion = "4.7.1"
 
 
 }

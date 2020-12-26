@@ -23,3 +23,39 @@
 -keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
     <fields>;
 }
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+
+-keep class xyz.lrhm.komakdast.core.data.model.* { *; }
+
+
+### Glide, Glide Okttp Module, Glide Transformations
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+
+
+### Crashlytics
+# In order to provide the most meaningful crash reports
+-keepattributes SourceFile,LineNumberTable
+# If you're using custom Eception
+-keep public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+-keep class com.google.firebase.crashlytics.** { *; }
+-dontwarn com.google.firebase.crashlytics.**
+
+### Crash report
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+
