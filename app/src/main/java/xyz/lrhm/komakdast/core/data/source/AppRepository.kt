@@ -12,14 +12,23 @@ import javax.inject.Singleton
 
 
 @Singleton
-class AppRepository @Inject constructor(@ApplicationContext val context: Context, val localDataSource: LocalDataSource) {
+class AppRepository @Inject constructor( val localDataSource: LocalDataSource) {
+
+    var cachedPackages: List<Package>? = null
+    var cachedLessons: List<Lesson>? = null
 
     suspend fun getAllLessons(): List<Lesson> {
-        return localDataSource.getAllLessons()
+        cachedLessons = localDataSource.getAllLessons()
+
+        return cachedLessons!!
     }
 
-    suspend fun getPackages() = localDataSource.getPackages()
+    suspend fun getPackages(): List<Package> {
 
+        cachedPackages = localDataSource.getPackages()
+
+        return cachedPackages!!
+    }
     suspend fun insertPackage(p: Package, lessons: List<Lesson>){
 
         localDataSource.deleteLessonsForPackage(p.id)
