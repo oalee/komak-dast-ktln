@@ -7,5 +7,6 @@
 
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/vazirregular</item>
     </style>
 </resources>
