@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.databinding.FragmentIntroBinding
@@ -32,6 +33,12 @@ class IntroFragment : Fragment() {
             .into(binding.imageView7)
 
         Glide.with(this).load(R.drawable.ok_button).into(binding.button)
+
+        binding.button.setOnClickListener {
+
+            findNavController().navigate(R.id.action_introFragment_to_mainFragment)
+
+        }
 
 
         return binding.root

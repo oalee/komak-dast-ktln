@@ -1,6 +1,5 @@
 package xyz.lrhm.komakdast.core.data.source
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -24,13 +23,11 @@ import javax.inject.Singleton
 class PreferenceRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     private val _livePreferences: MutableLiveData<AppPreferences> = MutableLiveData()
-    val livePreferences : LiveData<AppPreferences> = _livePreferences
+    val livePreferences: LiveData<AppPreferences> = _livePreferences
 
-//    val cachedPreferences: AppPreferences by lazy {
-//        _prefs!!
-//    }
+    fun getCachedPrefs() = _prefs!!
 
-     var _prefs: AppPreferences? = null
+    private var _prefs: AppPreferences? = null
     private val userPreferencesFlow = dataStore.data.catch { exception ->
         // dataStore.data throws an IOException when an error is encountered when reading data
         if (exception is IOException) {
@@ -40,10 +37,10 @@ class PreferenceRepository @Inject constructor(private val dataStore: DataStore<
         }
     }.map {
 
-      val showCompleted =  it[PreferencesKeys.SHOW_COMPLETED]?: false
-      val runCounter =   it[PreferencesKeys.RUN_COUNTER]?: 0
-
-        AppPreferences(runCounter , showCompleted)
+        val showCompleted = it[PreferencesKeys.SHOW_COMPLETED] ?: false
+        val runCounter = it[PreferencesKeys.RUN_COUNTER] ?: 0
+        val showIntro = it[PreferencesKeys.SHOWED_INTRO] ?: false
+        AppPreferences(runCounter, showCompleted, showIntro)
     }
 
     init {
@@ -52,34 +49,53 @@ class PreferenceRepository @Inject constructor(private val dataStore: DataStore<
         Timber.d("init preference repo")
     }
 
-    fun loadDataFromIO(){
-        if(_prefs == null)
-        CoroutineScope(Dispatchers.IO).launch {
+    fun onIntroDisplayed() {
 
-            userPreferencesFlow.collect {
-                _prefs = it
-                CoroutineScope(Dispatchers.Main).launch {
-                    _livePreferences.value = _prefs
+        if (_prefs?.showedIntro == false) {
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.edit { settings ->
+
+                    settings[PreferencesKeys.SHOWED_INTRO] = true
+                    _prefs!!.showedIntro = true
+                    CoroutineScope(Dispatchers.Main).launch {
+                        _livePreferences.value = _prefs
+
+                    }
                 }
 
             }
 
-
         }
     }
 
+    fun loadDataFromIO() {
+        if (_prefs == null)
+            CoroutineScope(Dispatchers.IO).launch {
 
-    fun increaseAppCounter(){
+                userPreferencesFlow.collect {
+                    _prefs = it
+                    CoroutineScope(Dispatchers.Main).launch {
+                        _livePreferences.value = _prefs
+                    }
+
+                }
+
+
+            }
+    }
+
+
+    fun increaseAppCounter() {
 
         CoroutineScope(Dispatchers.IO).launch {
-            dataStore.edit { settings->
+            dataStore.edit { settings ->
 
                 if (_prefs == null)
                     throw IOException("PREFS ARE NULL")
 
                 // save to persistent
                 settings[PreferencesKeys.RUN_COUNTER] = _prefs!!.runCounter + 1
-                _prefs!!.runCounter = _prefs!!.runCounter+1
+                _prefs!!.runCounter = _prefs!!.runCounter + 1
                 CoroutineScope(Dispatchers.Main).launch {
                     _livePreferences.value = _prefs
 
@@ -89,9 +105,6 @@ class PreferenceRepository @Inject constructor(private val dataStore: DataStore<
         }
 
     }
-
-
-
 
 
 }

@@ -37,11 +37,9 @@ class LoadingViewModel @ViewModelInject constructor(
                 val packages = appRepository.getPackages()
                 val levels = appRepository.getAllLessons()
 
-                Timber.d("ok $packages")
-                if (packages != null && levels != null) {
+                
+                dataStatus.value = DataStatus.Loaded
 
-                    dataStatus.value = DataStatus.Loaded
-                }
             } catch (
                 e: Exception
             ) {
