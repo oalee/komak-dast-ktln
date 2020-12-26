@@ -3,6 +3,7 @@ package xyz.lrhm.komakdast.core.data.source.local
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import xyz.lrhm.komakdast.core.data.model.Lesson
+import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.local.db.AppDao
 import javax.inject.Inject
 
@@ -12,7 +13,21 @@ class LocalDataSource @Inject constructor(val appDao: AppDao) {
         appDao.insertLessons(lessons)
     }
 
-    suspend fun getAllLessons() = withContext(Dispatchers.IO) {
-        return@withContext appDao.getLessons()
+    suspend fun deleteLessonsForPackage(id: Int) = withContext(Dispatchers.IO) {
+        appDao.deleteLessonsForPackage(id)
     }
+
+    suspend fun insertPackage(p: Package) = withContext(Dispatchers.IO) {
+        appDao.insertPackage(p)
+    }
+
+    suspend fun getPackages() = withContext(Dispatchers.IO) {
+       appDao.getPackages()
+    }
+
+    suspend fun getAllLessons() = withContext(Dispatchers.IO) {
+        appDao.getLessons()
+    }
+
+
 }

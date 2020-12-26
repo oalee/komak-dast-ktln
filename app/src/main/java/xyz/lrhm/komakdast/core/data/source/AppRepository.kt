@@ -3,6 +3,7 @@ package xyz.lrhm.komakdast.core.data.source
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import xyz.lrhm.komakdast.core.data.model.Lesson
+import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.local.LocalDataSource
 import java.io.IOException
 import java.io.InputStream
@@ -17,18 +18,18 @@ class AppRepository @Inject constructor(@ApplicationContext val context: Context
         return localDataSource.getAllLessons()
     }
 
-    fun parseLocalData() {
+    suspend fun getPackages() = localDataSource.getPackages()
 
-        try {
-            val inputStream= context.assets.open("")
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-           val string = String(buffer)
+    suspend fun insertPackage(p: Package, lessons: List<Lesson>){
 
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        localDataSource.deleteLessonsForPackage(p.id)
+
+        for (l in lessons)
+            l.packageId = p.id
+        localDataSource.insertPackage(p)
+        localDataSource.insertLessons(lessons)
 
     }
+
+
 }
