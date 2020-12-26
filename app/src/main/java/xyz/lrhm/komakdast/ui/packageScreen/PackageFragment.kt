@@ -1,4 +1,4 @@
-package xyz.lrhm.komakdast.ui.main
+package xyz.lrhm.komakdast.ui.packageScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,10 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.databinding.MainFragmentBinding
+import xyz.lrhm.komakdast.ui.main.MainViewModel
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class PackageFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels(
         ownerProducer = { requireActivity() }
