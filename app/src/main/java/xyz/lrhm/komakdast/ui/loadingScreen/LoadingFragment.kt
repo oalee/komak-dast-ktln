@@ -37,7 +37,7 @@ class LoadingFragment : Fragment() {
             when (it) {
                 LoadingViewModel.DataStatus.Loaded -> {
 
-                    findNavController().navigate(R.id.action_loadingFragment_to_mainFragment)
+                    findNavController().navigate(R.id.action_loadingFragment_to_introFragment)
                 }
                 LoadingViewModel.DataStatus.Loading -> {
                 }

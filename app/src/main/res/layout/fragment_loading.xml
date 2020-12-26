@@ -11,8 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.loadingScreen.LoadingFragment"
-        android:background="@color/transparent"
-        >
+        android:background="@color/transparent">
+
+        <ImageView
+            android:id="@+id/handsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/backgroundImageView"
+            app:layout_constraintWidth_percent="0.7"
+            app:layout_constraintHeight_percent="0.5"
+            app:srcCompat="@drawable/hands" />
 
         <TextView
             android:id="@+id/textView2"

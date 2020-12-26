@@ -6,9 +6,8 @@ import xyz.lrhm.komakdast.core.data.model.Lesson
 class TypeConverter {
 
     @TypeConverter
-    fun strToLessonType(string: String): Lesson.Type {
-        return Lesson.Type.values().find { it.type == string }!!
-    }
+    fun strToLessonType(string: String) = Lesson.Type.values().find { it.type == string }!!
+
 
     @TypeConverter
     fun lessonTypeToStr(type: Lesson.Type) = type.type
