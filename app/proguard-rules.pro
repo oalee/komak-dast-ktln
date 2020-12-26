@@ -28,6 +28,7 @@
 -dontwarn javax.annotation.ParametersAreNonnullByDefault
 
 -keep class xyz.lrhm.komakdast.core.data.model.* { *; }
+-keep class xyz.lrhm.komakdast.core.util.models.* { *; }
 
 
 ### Glide, Glide Okttp Module, Glide Transformations
