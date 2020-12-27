@@ -90,7 +90,7 @@ dependencies {
 
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
-
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
     // optional - Kotlin Extensions and Coroutines support for Room
     // optional - Test helpers

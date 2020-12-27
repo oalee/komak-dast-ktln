@@ -32,9 +32,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.17000002"
+            app:layout_constraintVertical_bias="0.100000024"
             tools:layout_height="@dimen/_20sdp" />
 
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/viewPager"
+            app:layout_constraintBottom_toTopOf="@+id/bottomBarImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topBarImageView" />
+
+        <com.ogaclejapan.smarttablayout.SmartTabLayout
+            android:id="@+id/viewpagertab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_12sdp"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottomBarImageView"
+            app:stl_customTabTextLayoutId="@layout/custom_tab_circle"
+            app:stl_dividerThickness="0dp"
+            app:stl_indicatorColor="#D2CE8620"
+            app:stl_indicatorCornerRadius="7dp"
+            app:stl_indicatorInterpolation="linear"
+            app:stl_indicatorThickness="@dimen/_12sdp"
+            app:stl_underlineThickness="0dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

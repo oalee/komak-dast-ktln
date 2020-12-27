@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_introFragment"
             app:destination="@id/introFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_packageFragment"
+            app:destination="@id/packageFragment" />
     </fragment>
     <fragment
         android:id="@+id/loadingFragment"
@@ -32,5 +35,24 @@
         <action
             android:id="@+id/action_introFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/packageFragment"
+        android:name="xyz.lrhm.komakdast.ui.packageScreen.PackageFragment"
+        android:label="PackageFragment">
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/gridLevelFragment2"
+        android:name="xyz.lrhm.komakdast.ui.packageScreen.GridLevelFragment"
+        android:label="GridLevelFragment">
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+        <argument
+            android:name="pageId"
+            app:argType="integer" />
     </fragment>
 </navigation>

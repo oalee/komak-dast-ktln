@@ -31,6 +31,22 @@ class MainFragment : Fragment() {
         Glide.with(this).load(R.drawable.package_1).into(binding.alfImageView)
         Glide.with(this).load(R.drawable.package_2).into(binding.keyboardImageView)
 
+        binding.puzImageView.setOnClickListener {
+
+            val directions = MainFragmentDirections.actionMainFragmentToPackageFragment(0)
+            findNavController().navigate(directions)
+        }
+        binding.alfImageView.setOnClickListener {
+
+            val directions = MainFragmentDirections.actionMainFragmentToPackageFragment(1)
+            findNavController().navigate(directions)
+        }
+        binding.keyboardImageView.setOnClickListener {
+
+            val directions = MainFragmentDirections.actionMainFragmentToPackageFragment(2)
+            findNavController().navigate(directions)
+        }
+
         binding.textView.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_introFragment)
         }
