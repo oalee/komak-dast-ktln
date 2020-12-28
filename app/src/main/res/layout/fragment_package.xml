@@ -37,11 +37,12 @@
             android:id="@+id/viewPager"
             android:layout_width="0dp"
 
-            tools:layout_height="200dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/levels_back_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topBarImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/topBarImageView"
+            tools:layout_height="200dp" />
 
         <com.ogaclejapan.smarttablayout.SmartTabLayout
             android:id="@+id/viewpagertab"

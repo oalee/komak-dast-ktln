@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -42,6 +43,8 @@ class PackageFragment : Fragment() {
         Glide.with(this).load(R.drawable.top_seperator).into(binding.topBarImageView)
         Glide.with(this).load(R.drawable.bottom_seperator).into(binding.bottomBarImageView)
 
+        val size = (viewModel.sizeManager.deviceWidth).toInt()
+        (binding.viewPager.layoutParams as ConstraintLayout.LayoutParams).height = size
         binding.viewPager.adapter =
             ScreenSlidePagerAdapter(childFragmentManager, pageSize, args.packageId)
 

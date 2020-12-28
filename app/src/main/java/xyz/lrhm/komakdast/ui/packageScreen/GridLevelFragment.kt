@@ -38,6 +38,12 @@ class GridLevelFragment : Fragment() {
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
         binding.recyclerView.adapter = adapter
+
+        binding.recyclerView.setHasFixedSize(true)
+
+    
+
+
         return binding.root
     }
 

@@ -30,9 +30,14 @@ class GridLevelAdapter(
 
         val binding = ItemLevelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        val lp = binding.root.layoutParams
+        val leftMargin = (sizeManager.deviceWidth - size * 4) / 5
+
+        val lp = binding.root.layoutParams as RecyclerView.LayoutParams
         lp.width = size
         lp.height = size
+        lp.topMargin = leftMargin
+        lp.leftMargin = leftMargin
+
         binding.root.layoutParams = lp
 //        binding.root.setBackgroundResource(R.color.colorAccent)
 
