@@ -3,7 +3,6 @@ package xyz.lrhm.komakdast.core.util
 import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.AppRepository
@@ -31,6 +30,11 @@ class LocalUtil @Inject constructor(
             val hit = packages.find { it.id == p.id }
 
             if (hit?.revision != p.revision) {
+
+                if (hit != null) {
+                    repo.localDataSource.clearDb(hit.id)
+                }
+
                 insertPackage(p)
             }
 
@@ -42,8 +46,11 @@ class LocalUtil @Inject constructor(
     suspend fun insertPackage(p: Package) {
 
         val levels = parseLevels(p.id)
+        var order = 0;
         for (l in levels) {
             l.packageId = p.id
+            l.order = order
+            order++
         }
 
         repo.insertPackage(p, levels)
@@ -57,7 +64,7 @@ class LocalUtil @Inject constructor(
             val string = assetFileToString("local.json")
 
             val converter = moshi.adapter(LocalPackageList::class.java)
-            Timber.d("string is $string")
+//            Timber.d("string is $string")
             return converter.fromJson(string)!!.objects
 
 //            Timber.d("object is $objects")

@@ -13,9 +13,6 @@ class LocalDataSource @Inject constructor(val appDao: AppDao) {
         appDao.insertLessons(lessons)
     }
 
-    suspend fun deleteLessonsForPackage(id: Int) = withContext(Dispatchers.IO) {
-        appDao.deleteLessonsForPackage(id)
-    }
 
     suspend fun insertPackage(p: Package) = withContext(Dispatchers.IO) {
         appDao.insertPackage(p)
@@ -33,5 +30,9 @@ class LocalDataSource @Inject constructor(val appDao: AppDao) {
         appDao.updateLesson(lesson)
     }
 
+    suspend fun clearDb(pacakgeId: Int) = withContext(Dispatchers.IO) {
+        appDao.deletePackage(pacakgeId)
+        appDao.deleteLessons(pacakgeId)
+    }
 
 }

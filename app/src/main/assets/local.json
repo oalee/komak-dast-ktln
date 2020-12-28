@@ -9,7 +9,7 @@
       "file": {
         "name": "package_0.zip"
       },
-
+      "revision": 2,
       "local": true
     },
     {
@@ -21,7 +21,7 @@
       "file": {
         "name": "package_1.zip"
       },
-
+      "revision": 2,
       "local": true
     },
     {
@@ -33,7 +33,7 @@
       "file": {
         "name": "package_2.zip"
       },
-
+      "revision": 2,
       "local": true
     }
   ]

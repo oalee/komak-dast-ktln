@@ -45,7 +45,6 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
 
     suspend fun insertPackage(p: Package, lessons: List<Lesson>) {
 
-        localDataSource.deleteLessonsForPackage(p.id)
 
         localDataSource.insertPackage(p)
         localDataSource.insertLessons(lessons)
@@ -78,9 +77,13 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
     fun getNextLevel(level: Lesson): Lesson? {
 
         val nextLesson =
-            cachedLessons!!.find { it.id == level.id + 1 && it.packageId == level.packageId }
+            cachedLessons!!.find { it.order == level.order!! + 1 && it.packageId == level.packageId }
 
         return nextLesson
     }
 
+    fun deletePackage(packageId: Int) {
+        localDataSource.appDao.deleteLessons(packageId)
+        localDataSource.appDao.deletePackage(packageId)
+    }
 }

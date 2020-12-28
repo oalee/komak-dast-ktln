@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.source.AppRepository
@@ -32,12 +33,19 @@ class LoadingViewModel @ViewModelInject constructor(
         viewModelScope.launch {
 
             try {
+                val startTime = System.currentTimeMillis()
                 localUtil.syncLocalPackagesWithDB()
 
                 val packages = appRepository.getPackages()
                 val levels = appRepository.getAllLessons()
 
-                
+                val end = System.currentTimeMillis();
+                var delayTime = (end - startTime)
+                if (delayTime < 1000)
+                    delayTime = 1000
+                delay(delayTime)
+
+
                 dataStatus.value = DataStatus.Loaded
 
             } catch (

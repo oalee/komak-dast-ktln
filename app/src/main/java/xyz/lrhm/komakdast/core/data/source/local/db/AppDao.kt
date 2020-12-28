@@ -23,7 +23,10 @@ interface AppDao {
     fun getPackages(): List<Package>
 
     @Query("Delete from Lesson where packageId == :id")
-    fun deleteLessonsForPackage(id: Int)
+    fun deleteLessons(id: Int)
+
+    @Query("Delete from Package where id == :id")
+    fun deletePackage(id: Int)
 
     @Update
     fun updateLesson(lesson: Lesson)

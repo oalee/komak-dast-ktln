@@ -25,7 +25,9 @@ data class Lesson(
 
     val answer: String? = null,
 
-    var packageId: Int? = null
+    var packageId: Int? = null,
+
+    var order: Int? = null
 ) {
     enum class Type(val type: String) {
         @Json(name = "4pics")
