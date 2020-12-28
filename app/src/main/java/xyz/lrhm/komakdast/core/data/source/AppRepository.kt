@@ -50,7 +50,7 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
     }
 
     fun isLessonOpen(lesson: Lesson): Boolean {
-        if (lesson.id == 0 || (cachedLessons?.find { it.id == lesson.id - 1 && it.packageId == lesson.packageId }?.resolved == true))
+        if (lesson.id == 1 || lesson.resolved || (cachedLessons?.find { it.id == lesson.id - 1 && it.packageId == lesson.packageId }?.resolved == true))
             return true
         return false
     }
