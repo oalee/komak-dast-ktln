@@ -1,5 +1,8 @@
 package xyz.lrhm.komakdast.core.data.source
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
@@ -62,5 +65,22 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
 
     fun getPackageSize(packageId: Int) = cachedLessons!!.filter { it.packageId == packageId }.size
 
+    fun resolveLevel(lesson: Lesson) {
+
+        lesson.resolved = true
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.updateLesson(lesson)
+        }
+        cachedLessons!!.find { it.key == lesson.key }!!.resolved = true
+
+    }
+
+    fun getNextLevel(level: Lesson): Lesson? {
+
+        val nextLesson =
+            cachedLessons!!.find { it.id == level.id + 1 && it.packageId == level.packageId }
+
+        return nextLesson
+    }
 
 }

@@ -15,7 +15,7 @@ data class Lesson(
 
     val id: Int,
 
-    val resolved: Boolean = true,
+    var resolved: Boolean = true,
 
     val type: Type? = null,
 

@@ -22,11 +22,15 @@ class LocalDataSource @Inject constructor(val appDao: AppDao) {
     }
 
     suspend fun getPackages() = withContext(Dispatchers.IO) {
-       appDao.getPackages()
+        appDao.getPackages()
     }
 
     suspend fun getAllLessons() = withContext(Dispatchers.IO) {
         appDao.getLessons()
+    }
+
+    suspend fun updateLesson(lesson: Lesson) = withContext(Dispatchers.IO) {
+        appDao.updateLesson(lesson)
     }
 
 

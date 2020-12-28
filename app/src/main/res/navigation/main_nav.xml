@@ -43,6 +43,11 @@
         <argument
             android:name="packageId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_packageFragment_to_videoGameFragment"
+            app:destination="@id/videoGameFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/packageFragment" />
     </fragment>
     <fragment
         android:id="@+id/gridLevelFragment2"
@@ -54,5 +59,19 @@
         <argument
             android:name="pageId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoGameFragment"
+        android:name="xyz.lrhm.komakdast.ui.lessonScreen.VideoGameFragment"
+        android:label="VideoGameFragment">
+        <argument
+            android:name="levelKey"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_videoGameFragment_self"
+            app:destination="@id/videoGameFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/packageFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>

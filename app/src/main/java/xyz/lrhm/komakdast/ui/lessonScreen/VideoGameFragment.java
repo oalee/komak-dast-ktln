@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -36,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import xyz.lrhm.komakdast.R;
 import xyz.lrhm.komakdast.core.data.model.Lesson;
 import xyz.lrhm.komakdast.core.data.source.AppRepository;
+import xyz.lrhm.komakdast.core.util.SizeManager;
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager;
 import xyz.lrhm.komakdast.core.util.legacy.LengthManager;
 import xyz.lrhm.komakdast.core.util.legacy.Tools;
@@ -60,16 +61,21 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
     Tools tools;
     ImageView imageView;
     Lesson level;
+    ImageView cheatButton;
     private int packageSize;
     private View[] cheatButtons;
     private boolean skiped = false;
     private boolean resulved = false;
     private View blackWidow;
     private int lastLevelId;
+    View root;
 
 
     @Inject
     AppRepository appRepository;
+
+    @Inject
+    SizeManager sizeManager;
 
     public VideoGameFragment() {
         // Required empty public constructor
@@ -80,8 +86,11 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            levelId = getArguments().getInt("LevelId");
-            packageId = getArguments().getInt("id");
+            VideoGameFragmentArgs args = VideoGameFragmentArgs.fromBundle(getArguments());
+            level = appRepository.getLesson(args.getLevelKey());
+
+            levelId = level.getId();
+            packageId = level.getPackageId();
 
         }
     }
@@ -92,6 +101,7 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_game, container, false);
 
+        root = view;
 //        lengthManager = ((MainApplication) getActivity().getApplication()).getLengthManager();
 //        imageManager = ((MainApplication) getActivity().getApplication()).getImageManager();
 //        db = DBAdapter.getInstance(getActivity());
@@ -101,10 +111,19 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
         imageManager = ImageManager.getInstance(requireContext());
         tools = new Tools(requireContext());
 
-        level = appRepository.getLesson(levelId);
+//        level = appRepository.getLesson(levelId);
         lastLevelId = appRepository.getLastLevelIdForPackage(packageId);
         packageSize = appRepository.getPackageSize(packageId);
 
+        cheatButton = view.findViewById(R.id.cheat_button);
+        cheatButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                toggleCheatButton();
+
+            }
+        });
 
         playerView = view.findViewById(R.id.player_view);
 
@@ -143,23 +162,50 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
             });
 
         }
-        if (level.getType().equals("keyboard")) {
+        if (level.getType() == Lesson.Type.Keyboard) {
             imageView.setVisibility(View.GONE);
 
             keyboardContainer = (FrameLayout) view.findViewById(R.id.fragment_game_keyboard_container);
 
             keyboardContainer.setVisibility(View.VISIBLE);
 
-            keyboardView = new KeyboardView(getContext(), level.getAnswer());
+            keyboardView = new KeyboardView(getContext(), level.getAnswer(), sizeManager);
             keyboardView.onKeyboardEvent = this;
             keyboardContainer.addView(keyboardView);
 
-            ((MainActivity) getActivity()).setupCheatButton(packageId);
+            Glide.with(this).load(R.drawable.cheat_button).into(cheatButton);
 
         }
 
         return view;
     }
+
+
+    Boolean areCheatsVisible = false;
+
+    public void toggleCheatButton() {
+        disableCheatButton(false);
+        if (!areCheatsVisible) {
+
+
+            Glide.with(this).load(R.drawable.next_button).into(cheatButton);
+            areCheatsVisible = true;
+            showCheats();
+
+        } else {
+
+
+            Glide.with(this).load(R.drawable.cheat_button).into(cheatButton);
+            areCheatsVisible = false;
+
+            hideCheats();
+        }
+    }
+
+    public void disableCheatButton(boolean enable) {
+        cheatButton.setClickable(enable);
+    }
+
 
     void init4Pics(final View parent) {
 
@@ -333,7 +379,8 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
 
     private void nextLevel(int prize) {
 
-        db.resolveLevel(packageId, levelId);
+        appRepository.resolveLevel(level);
+//        db.resolveLevel(packageId, levelId);
         resulved = true;
 
 //        tools.backUpDB();
@@ -343,33 +390,22 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
                     public void NextLevel() {
 
                         if (level.getId() == lastLevelId) {
+                            Navigation.findNavController(root).navigateUp();
 
-                            getActivity().getSupportFragmentManager().popBackStack();
                             return;
                         }
 
 
-                        Bundle bundle = new Bundle();
-                        int levelID = level.getId() + 1;
-                        bundle.putInt("LevelId", levelID);
-                        bundle.putInt("id", packageId);
+                        Lesson next = appRepository.getNextLevel(level);
 
-                        xyz.lrhm.komakdast.View.Fragment.VideoGameFragment gameFragment = new xyz.lrhm.komakdast.View.Fragment.VideoGameFragment();
-                        gameFragment.setArguments(bundle);
-
-                        if (mainActivity == null && getActivity() != null)
-                            mainActivity = (MainActivity) getActivity();
-                        if (mainActivity != null) {
-                            FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.fragment_container, gameFragment, LevelsAdapter.OFFLINE_GAME_FRAGMENT_TAG);
-                            transaction.commitAllowingStateLoss();
-
-                        }
+                        NavDirections directions = VideoGameFragmentDirections.Companion.actionVideoGameFragmentSelf(next.getKey());
+                        Navigation.findNavController(root).navigate(directions);
                     }
 
                     @Override
                     public void Home() {
-                        getActivity().getSupportFragmentManager().popBackStack();
+
+                        Navigation.findNavController(root).navigateUp();
                     }
                 }).show();
     }
@@ -391,9 +427,9 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
                 "")).replace("آ", "ا").replace("/", ""))) {
 
 
-            if (!level.isResolved()) {
-                coinAdapter.earnCoins(CoinAdapter.LEVEL_COMPELETED_PRIZE);
-            }
+//            if (!level.isResolved()) {
+//                coinAdapter.earnCoins(CoinAdapter.LEVEL_COMPELETED_PRIZE);
+//            }
 
             if (!skiped)
                 nextLevel(30);
@@ -421,17 +457,17 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
 
         switch (view.getId()) {
             case R.id.cheat_remove_some_letters:
-                ((MainActivity) getActivity()).toggleCheatButton();
+                toggleCheatButton();
                 cheatHazf();
                 break;
 
             case R.id.cheat_reveal_a_letter:
-                ((MainActivity) getActivity()).toggleCheatButton();
+                toggleCheatButton();
                 cheatAzafe();
                 break;
 
             case R.id.cheat_skip_level:
-                ((MainActivity) getActivity()).toggleCheatButton();
+                toggleCheatButton();
                 cheatNext();
                 break;
         }
@@ -466,8 +502,7 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
                 if (getActivity() == null)
                     return;
 
-
-                ((MainActivity) getActivity()).disableCheatButton(true);
+                disableCheatButton(true);
             }
 
             @Override
@@ -509,8 +544,7 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
                 if (getActivity() == null)
                     return;
 
-
-                ((MainActivity) getActivity()).disableCheatButton(true);
+                disableCheatButton(true);
             }
 
             @Override
@@ -530,7 +564,7 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
     private void cheatNext() {
 
 
-        if (level.isResolved()) {
+        if (level.getResolved()) {
 
             skiped = true;
             while (keyboardView.setAnswered()) {
@@ -540,15 +574,14 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
                 @Override
                 public void onClick(View view) {
                     nextLevel(30);
-                    Logger.d("TAG", "keyboard view clickd?");
 
                 }
             });
 //            nextLevel(0);
-        } else if (coinAdapter.spendCoins(CoinAdapter.SKIP_LEVEL_COST)) {
+        } else {
             skiped = true;
             resulved = true;
-            db.resolveLevel(packageId, levelId);
+            appRepository.resolveLevel(level);
 
             while (keyboardView.setAnswered()) {
 
@@ -564,13 +597,13 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
     }
 
     private void cheatHazf() {
-        if (level.isResolved()) {
+        if (level.getResolved()) {
             keyboardView.removeSome();
-        } else if (coinAdapter.spendCoins(CoinAdapter.ALPHABET_HIDING_COST)) {
+        } else {
             if (!keyboardView.removeSome()) {
                 String toastText = "نمیشه دیگه";
-                ToastMaker.show(getContext(), toastText, Toast.LENGTH_SHORT);
-                coinAdapter.earnCoins(CoinAdapter.ALPHABET_HIDING_COST);
+//                ToastMaker.show(getContext(), toastText, Toast.LENGTH_SHORT);
+//                coinAdapter.earnCoins(CoinAdapter.ALPHABET_HIDING_COST);
             }
         }
 
@@ -578,13 +611,11 @@ public class VideoGameFragment extends Fragment implements KeyboardView.OnKeyboa
 
 
     private void cheatAzafe() {
-        if (level.isResolved()) {
+        if (level.getResolved()) {
             keyboardView.showOne();
-        } else if (coinAdapter.spendCoins(CoinAdapter.LETTER_REVEAL_COST)) {
+        } else {
             if (!keyboardView.showOne()) {
                 String toastText = "نمیشه دیگه";
-                ToastMaker.show(getContext(), toastText, Toast.LENGTH_SHORT);
-                coinAdapter.earnCoins(CoinAdapter.LETTER_REVEAL_COST);
             }
         }
 

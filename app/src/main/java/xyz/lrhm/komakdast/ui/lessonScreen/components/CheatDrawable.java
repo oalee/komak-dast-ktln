@@ -11,6 +11,8 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import xyz.lrhm.komakdast.R;
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager;
 import xyz.lrhm.komakdast.core.util.legacy.LengthManager;
@@ -50,7 +52,7 @@ public class CheatDrawable extends Drawable {
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(lengthManager.getCheatButtonFontSize());
-//        textPaint.setTypeface(FontsHolder.getSansBold(this.context));
+        textPaint.setTypeface(ResourcesCompat.getFont(context, R.font.sans_bold_num));
         textPaint.setColor(Color.WHITE);
         textPaint.setShadowLayer(1, 1, 1, Color.BLACK);
 

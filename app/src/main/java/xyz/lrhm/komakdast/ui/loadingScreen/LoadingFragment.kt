@@ -37,7 +37,7 @@ class LoadingFragment : Fragment() {
             when (it) {
                 LoadingViewModel.DataStatus.Loaded -> {
 
-                    if (!viewModel.preferenceRepository.getCachedPrefs().localDataImported) {
+                    if (!viewModel.preferenceRepository.getCachedPrefs().showedIntro) {
                         findNavController().navigate(R.id.action_loadingFragment_to_introFragment)
                         viewModel.preferenceRepository.onIntroDisplayed()
 

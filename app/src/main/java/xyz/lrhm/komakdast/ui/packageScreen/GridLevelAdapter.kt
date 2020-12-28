@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import xyz.lrhm.komakdast.R
@@ -56,6 +57,14 @@ class GridLevelAdapter(
             )
             holder.binding.itemLevelTextView.visibility = View.VISIBLE
             Glide.with(parentFragment).load(R.drawable.unlock).into(holder.binding.itemLevelFrame)
+
+            holder.binding.root.setOnClickListener {
+
+                val direction =
+                    PackageFragmentDirections.actionPackageFragmentToVideoGameFragment(item.key!!)
+                parentFragment.findNavController().navigate(direction);
+            }
+
         } else {
             holder.binding.itemLevelTextView.visibility = View.GONE
             Glide.with(parentFragment).load(R.drawable.level_locked)

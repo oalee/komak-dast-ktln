@@ -14,9 +14,6 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
 import xyz.lrhm.komakdast.R;
 import xyz.lrhm.komakdast.core.util.SizeManager;
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager;
@@ -31,7 +28,6 @@ import xyz.lrhm.komakdast.core.util.legacy.SizeConverter;
  * may the force be with you
  * use the source luke
  */
-@AndroidEntryPoint
 public class KeyboardView extends RelativeLayout {
     private static final String TAG = "KeyboardView";
     public OnKeyboardEvent onKeyboardEvent;
@@ -51,13 +47,13 @@ public class KeyboardView extends RelativeLayout {
     double mReaminingLenght;
     int mMargin;
     private OnClickListener mListener;
-
-    @Inject
     SizeManager sizeManager;
 
 
-    public KeyboardView(Context context, String solution) {
+    public KeyboardView(Context context, String solution, SizeManager sizeManager) {
         super(context);
+
+        this.sizeManager = sizeManager;
 
         solution = solution.replace(".", "/");
         this.solution = solution;
