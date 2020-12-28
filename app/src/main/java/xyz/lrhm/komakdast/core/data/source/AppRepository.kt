@@ -55,5 +55,12 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
         return false
     }
 
+    fun getLesson(key: Int) = cachedLessons!!.find { it.key == key }
+
+    fun getLastLevelIdForPackage(packageId: Int) =
+        cachedLessons!!.filter { it.packageId == packageId }.last().id
+
+    fun getPackageSize(packageId: Int) = cachedLessons!!.filter { it.packageId == packageId }.size
+
 
 }

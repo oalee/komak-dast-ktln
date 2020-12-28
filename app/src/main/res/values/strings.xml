@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">کمک دست</string>
+    <integer name="click_id_four" />
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

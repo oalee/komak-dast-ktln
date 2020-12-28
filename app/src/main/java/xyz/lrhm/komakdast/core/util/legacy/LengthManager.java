@@ -190,6 +190,11 @@ public class LengthManager {
         return getLevelImageWidth();
     }
 
+    public int getCheatButtonHeight() {
+        return getHeightWithFixedWidth(R.drawable.cheat_right, getCheatButtonWidth());
+    }
+
+
     public float getCheatButtonFontSize() {
         return getScreenWidth() / 15;
     }
