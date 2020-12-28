@@ -32,7 +32,8 @@ class PackageFragment : Fragment() {
 
         binding = FragmentPackageBinding.inflate(inflater, container, false)
 
-        val levels = viewModel.appRepository.cachedLessons!!
+        val levels =
+            viewModel.appRepository.cachedLessons!!.filter { it.packageId == args.packageId }
         var pageSize = levels.size / 16
         if (levels.size % 16 != 0) {
             pageSize++

@@ -1,21 +1,26 @@
 package xyz.lrhm.komakdast.ui.packageScreen
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.AndroidEntryPoint
+import com.bumptech.glide.Glide
+import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.core.data.model.Lesson
+import xyz.lrhm.komakdast.core.data.source.AppRepository
 import xyz.lrhm.komakdast.core.util.SizeManager
+import xyz.lrhm.komakdast.core.util.numeralStringToPersianDigits
 import xyz.lrhm.komakdast.databinding.ItemLevelBinding
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class GridLevelAdapter(val parentFragment: Fragment, val levels: List<Lesson>) :
+class GridLevelAdapter(
+    val parentFragment: Fragment,
+    val levels: List<Lesson>,
+    val sizeManager: SizeManager,
+    val appRepository: AppRepository
+) :
     RecyclerView.Adapter<GridLevelAdapter.ViewHolder>() {
 
-    @Inject
-    lateinit var sizeManager: SizeManager
 
     class ViewHolder(val binding: ItemLevelBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -25,8 +30,11 @@ class GridLevelAdapter(val parentFragment: Fragment, val levels: List<Lesson>) :
 
         val binding = ItemLevelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        binding.root.layoutParams.width = size
-        binding.root.layoutParams.height = size
+        val lp = binding.root.layoutParams
+        lp.width = size
+        lp.height = size
+        binding.root.layoutParams = lp
+//        binding.root.setBackgroundResource(R.color.colorAccent)
 
         return ViewHolder(binding)
     }
@@ -37,20 +45,17 @@ class GridLevelAdapter(val parentFragment: Fragment, val levels: List<Lesson>) :
 
 
 //        val levelPosition: Int = page * 16 + position
-//        if (levelPosition == 0 || levels[levelPosition].isResolved() || levels[levelPosition - 1].isResolved()) {
-//            viewHolder.textView.setText(
-//                Tools.numeralStringToPersianDigits(
-//                    levels[levelPosition].getId().toString() + ""
-//                )
-//            )
-//            viewHolder.textView.setVisibility(View.VISIBLE)
-//            Glide.with(context).load(R.drawable.unlock).into(viewHolder.frame)
-//            viewHolder.imageView.setVisibility(View.VISIBLE)
-//        } else {
-//            viewHolder.imageView.setVisibility(View.GONE)
-//            viewHolder.textView.setVisibility(View.GONE)
-//            Glide.with(context).load(R.drawable.level_locked).into(viewHolder.frame)
-//        }
+        if (appRepository.isLessonOpen(item)) {
+            holder.binding.itemLevelTextView.setText(
+                item.id.toString().numeralStringToPersianDigits()
+            )
+            holder.binding.itemLevelTextView.visibility = View.VISIBLE
+            Glide.with(parentFragment).load(R.drawable.unlock).into(holder.binding.itemLevelFrame)
+        } else {
+            holder.binding.itemLevelTextView.visibility = View.GONE
+            Glide.with(parentFragment).load(R.drawable.level_locked)
+                .into(holder.binding.itemLevelFrame)
+        }
 
     }
 

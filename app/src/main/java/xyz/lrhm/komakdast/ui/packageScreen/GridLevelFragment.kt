@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import xyz.lrhm.komakdast.databinding.FragmentGridLevelsBinding
 import xyz.lrhm.komakdast.ui.main.MainViewModel
@@ -28,7 +29,15 @@ class GridLevelFragment : Fragment() {
 
         binding = FragmentGridLevelsBinding.inflate(inflater, container, false)
 
-        
+        val lessons =
+            viewModel.appRepository.getCachedLessonsForPackageAndPage(args.packageId, args.pageId)
+
+        val adapter = GridLevelAdapter(
+            this, lessons, viewModel.sizeManager, viewModel.appRepository
+        )
+
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
+        binding.recyclerView.adapter = adapter
         return binding.root
     }
 
