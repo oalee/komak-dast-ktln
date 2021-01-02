@@ -43,7 +43,7 @@ class SizeConverter(var sizeManager: SizeManager) {
             convertor.height = mHeight.toInt()
             convertor.baseHeight = baseHeight
             convertor.baseWidth = baseWidth
-            convertor.width = (mHeight / baseHeight.toFloat() * baseWidth) as Int
+            convertor.width = (mHeight / baseHeight.toFloat() * baseWidth).toInt()
             return convertor
         }
 

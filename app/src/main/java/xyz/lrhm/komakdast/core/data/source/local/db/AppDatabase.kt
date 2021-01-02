@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
 
-@Database(entities = [Lesson::class, Package::class], version = 6)
+@Database(entities = [Lesson::class, Package::class], version = 8)
 @TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDao(): AppDao

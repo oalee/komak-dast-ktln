@@ -1,11 +1,11 @@
 package xyz.lrhm.komakdast
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class MainApplication : Application() {
+class MainApplication : MultiDexApplication() {
 //
 //    @Inject
 //    lateinit var preferenceRepository: PreferenceRepository

@@ -27,7 +27,6 @@ class LoadingViewModel @ViewModelInject constructor(
 
         dataStatus.value = DataStatus.Loading
 
-        Timber.d("ok start")
 
 
         viewModelScope.launch {
@@ -51,7 +50,7 @@ class LoadingViewModel @ViewModelInject constructor(
             } catch (
                 e: Exception
             ) {
-                Timber.d("ok not $e")
+                Timber.e(e)
 
                 dataStatus.value = DataStatus.Error
             }

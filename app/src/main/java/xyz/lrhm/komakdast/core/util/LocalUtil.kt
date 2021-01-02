@@ -31,11 +31,13 @@ class LocalUtil @Inject constructor(
 
             if (hit?.revision != p.revision) {
 
+                var lastResolvedId: Int? = null
                 if (hit != null) {
-                    repo.localDataSource.clearDb(hit.id)
+
+                    lastResolvedId = repo.localDataSource.clearDb(hit.id)
                 }
 
-                insertPackage(p)
+                insertPackage(p, lastResolvedId)
             }
 
         }
@@ -43,7 +45,7 @@ class LocalUtil @Inject constructor(
 
     }
 
-    suspend fun insertPackage(p: Package) {
+    suspend fun insertPackage(p: Package, lastResolvedId: Int?) {
 
         val levels = parseLevels(p.id)
         var order = 0;
@@ -51,6 +53,10 @@ class LocalUtil @Inject constructor(
             l.packageId = p.id
             l.order = order
             order++
+
+            if (lastResolvedId != null && l.id <= lastResolvedId) {
+                l.resolved = true
+            }
         }
 
         repo.insertPackage(p, levels)

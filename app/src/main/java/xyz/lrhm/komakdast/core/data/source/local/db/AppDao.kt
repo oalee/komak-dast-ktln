@@ -19,6 +19,10 @@ interface AppDao {
     @Query("Select * from Lesson")
     fun getLessons(): List<Lesson>
 
+    @Query("Select * from Lesson where Lesson.packageId == :packageId  and Lesson.resolved == 1 order by Lesson.id desc limit 1")
+    fun getLastResolvedLesson(packageId: Int): Lesson
+
+
     @Query("Select * from Package")
     fun getPackages(): List<Package>
 
@@ -27,6 +31,7 @@ interface AppDao {
 
     @Query("Delete from Package where id == :id")
     fun deletePackage(id: Int)
+
 
     @Update
     fun updateLesson(lesson: Lesson)

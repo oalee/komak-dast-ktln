@@ -18,19 +18,16 @@ import xyz.lrhm.komakdast.core.util.legacy.LengthManager
 class NextLevelDialog(
     context: Context,
     private val level: Lesson,
-    packageSize: Int,
-    skiped: Boolean,
-    prize: Int,
-    finishLevel: FinishLevel
+    val packageSize: Int,
+    val skiped: Boolean,
+    val prize: Int,
+    val finishLevel: FinishLevel
 ) : Dialog(
     context
 ), View.OnClickListener {
-    private val packageSize: Int
-    private val prize: Int
-    private val finishLevel: FinishLevel
-    private val lengthManager: LengthManager
-    private val skiped: Boolean
-    override fun onCreate(savedInstanceState: Bundle) {
+    private val lengthManager: LengthManager = LengthManager(context)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setCanceledOnTouchOutside(true)
         setContentView(R.layout.dialog_next_level)
@@ -38,10 +35,9 @@ class NextLevelDialog(
         val prizeTextView = findViewById<View>(R.id.prizeTextView) as TextView
         val scarf = findViewById<ImageView>(R.id.scarf_image_view)
         if (!level.resolved && !skiped) {
-            val prizeString: String
-            prizeString = if (prize == 30) "+۳۰" else if (prize == 10) "+۱۰" else "+۵"
+            val prizeString: String = if (prize == 30) "+۳۰" else if (prize == 10) "+۱۰" else "+۵"
             customizeTextView(prizeTextView, prizeString, lengthManager.getLevelAuthorTextSize())
-            Glide.with(getContext()).load(R.drawable.scarf).into(scarf)
+            Glide.with(context).load(R.drawable.scarf).into(scarf)
         } else {
             prizeTextView.visibility = View.GONE
             scarf.visibility = View.GONE
@@ -90,11 +86,4 @@ class NextLevelDialog(
         //        textView.setTypeface(FontsHolder.getSansBold(textView.getContext()));
     }
 
-    init {
-        this.packageSize = packageSize + 1
-        this.prize = prize
-        this.finishLevel = finishLevel
-        this.skiped = skiped
-        lengthManager = LengthManager(context)
-    }
 }

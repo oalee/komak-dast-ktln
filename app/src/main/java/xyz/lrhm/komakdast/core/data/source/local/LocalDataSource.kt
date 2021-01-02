@@ -2,6 +2,7 @@ package xyz.lrhm.komakdast.core.data.source.local
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.local.db.AppDao
@@ -31,8 +32,13 @@ class LocalDataSource @Inject constructor(val appDao: AppDao) {
     }
 
     suspend fun clearDb(pacakgeId: Int) = withContext(Dispatchers.IO) {
+        val lessons = appDao.getLastResolvedLesson(pacakgeId)
+        Timber.d("last resolved lesson id is ${lessons.id}")
         appDao.deletePackage(pacakgeId)
         appDao.deleteLessons(pacakgeId)
+
+        lessons.id
+
     }
 
 }

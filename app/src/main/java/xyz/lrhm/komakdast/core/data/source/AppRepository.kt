@@ -3,7 +3,6 @@ package xyz.lrhm.komakdast.core.data.source
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.model.Package
 import xyz.lrhm.komakdast.core.data.source.local.LocalDataSource
@@ -23,8 +22,8 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
 
         val startIdx = pageId * 16
         val endIdx = (startIdx + 16).coerceAtMost(temp.size)
-        Timber.d("the list is $temp")
-        Timber.d("end idx is $endIdx and start is $startIdx and size is ${temp.size}")
+//        Timber.d("the list is $temp")
+//        Timber.d("end idx is $endIdx and start is $startIdx and size is ${temp.size}")
 
         return temp.subList(startIdx, endIdx)
 
@@ -81,6 +80,7 @@ class AppRepository @Inject constructor(val localDataSource: LocalDataSource) {
 
         return nextLesson
     }
+
 
     fun deletePackage(packageId: Int) {
         localDataSource.appDao.deleteLessons(packageId)

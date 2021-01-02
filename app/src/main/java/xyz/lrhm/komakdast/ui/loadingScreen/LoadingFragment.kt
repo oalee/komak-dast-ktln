@@ -47,6 +47,7 @@ class LoadingFragment : Fragment() {
                 LoadingViewModel.DataStatus.Loading -> {
                 }
                 LoadingViewModel.DataStatus.Error -> {
+
                 }
             }
         }
