@@ -8,13 +8,17 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.LinearLayout
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
 import java.io.InputStream
 import java.util.regex.Pattern
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Tools(private val context: Context) {
-    private val lengthManager: LengthManager? = null
-    private val imageManager: ImageManager? = null
+@Singleton
+class Tools @Inject constructor(
+    @ApplicationContext val context: Context,
+) {
 
     fun convertPixelsToDp(px: Float): Float {
         val resources = context.resources

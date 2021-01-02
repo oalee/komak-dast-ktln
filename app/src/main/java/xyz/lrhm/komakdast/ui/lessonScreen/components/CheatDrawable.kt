@@ -6,14 +6,15 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager
-import xyz.lrhm.komakdast.core.util.legacy.ImageManager.Companion.getInstance
 import xyz.lrhm.komakdast.core.util.legacy.LengthManager
 
 class CheatDrawable(
     context: Context,
     index: Int,
     private val title: String,
-    private val price: String
+    private val price: String,
+    val imageManager: ImageManager,
+    val lengthManager: LengthManager
 ) : Drawable() {
     private var background: Bitmap
     private val rotated: Boolean
@@ -22,8 +23,7 @@ class CheatDrawable(
     private val titlePosition = IntArray(2)
     private val pricePosition = IntArray(2)
     private val paint: Paint
-    private val imageManager: ImageManager?
-    private val lengthManager: LengthManager
+
     private fun centerTextAt(text: String, x: Int, y: Int, paint: Paint, textPosition: IntArray) {
         val rectText = Rect()
         paint.getTextBounds(text, 0, text.length, rectText)
@@ -52,8 +52,6 @@ class CheatDrawable(
     init {
         rotated = index == 1
         this.context = context
-        imageManager = getInstance(context)
-        lengthManager = LengthManager(context)
         background = imageManager!!.loadImageFromResource(
             R.drawable.cheat_right,
             lengthManager.getCheatButtonWidth(),

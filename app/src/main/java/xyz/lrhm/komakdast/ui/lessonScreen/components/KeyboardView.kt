@@ -11,16 +11,17 @@ import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.RelativeLayout
+import dagger.hilt.android.AndroidEntryPoint
 import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.core.util.SizeManager
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager
-import xyz.lrhm.komakdast.core.util.legacy.ImageManager.Companion.getInstance
 import xyz.lrhm.komakdast.core.util.legacy.LengthManager
 import xyz.lrhm.komakdast.core.util.legacy.SizeConverter
 import xyz.lrhm.komakdast.core.util.legacy.SizeConverter.Companion.SizeConvertorFormHeight
 import xyz.lrhm.komakdast.core.util.legacy.SizeConverter.Companion.SizeConvertorFromWidth
 import xyz.lrhm.komakdast.ui.lessonScreen.components.KeyboardView.KeyView
 import java.util.*
+import javax.inject.Inject
 
 /**
  * for whom reads this code , i have wrote this code in my darkest hours
@@ -29,6 +30,7 @@ import java.util.*
  * may the force be with you
  * use the source luke
  */
+@AndroidEntryPoint
 class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager) :
     RelativeLayout(context) {
     @JvmField
@@ -43,13 +45,16 @@ class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager
     var swipeView: SwipeView
     var showedData = ""
     var levelAnswer: String
-    var imageManager: ImageManager?
+    @Inject
+    lateinit var imageManager: ImageManager
     var buttonConvertor: SizeConverter
     var solution: String
     var mReaminingLenght: Double
     var mMargin: Int
     private var mListener: OnClickListener? = null
-    var sizeManager: SizeManager
+
+    @Inject
+    lateinit var sizeManager: SizeManager
     fun getAnswersInALine(
         answer: String, context: Context?,
         isTwoLine: Boolean, lineNumber: Int, otherAnswerCount: Int
@@ -875,10 +880,8 @@ class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager
 
     init {
         var solution = solution
-        this.sizeManager = sizeManager
         solution = solution.replace(".", "/")
         this.solution = solution
-        imageManager = getInstance(context!!)
         levelAnswer = solution.replace(" ", "").replace("/", "")
         val random = Random(System.currentTimeMillis())
         val string = solution.replace(" ", "").replace("/", "")

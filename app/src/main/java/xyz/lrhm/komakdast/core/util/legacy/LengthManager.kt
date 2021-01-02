@@ -3,19 +3,20 @@ package xyz.lrhm.komakdast.core.util.legacy
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Pair
+import dagger.hilt.android.qualifiers.ApplicationContext
 import xyz.lrhm.komakdast.R
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LengthManager(private val context: Context) {
+@Singleton
+class LengthManager @Inject constructor(@ApplicationContext val context: Context) {
     //    private static boolean initialized = false;
-    val screenHeight: Int
-    val screenWidth: Int
-    private fun getScreenWidth(context: Context): Int {
-        return context.resources.displayMetrics.widthPixels
-    }
 
-    private fun getScreenHeight(context: Context): Int {
-        return context.resources.displayMetrics.heightPixels
-    }
+    val screenHeight = context.resources.displayMetrics.heightPixels
+
+
+    val screenWidth = context.resources.displayMetrics.widthPixels
+
 
     fun getResourceDimensions(resourceId: Int): Pair<Int, Int> {
         val resources = context.resources
@@ -39,16 +40,16 @@ class LengthManager(private val context: Context) {
         get() = (screenHeight * 0.12f).toInt()
 
     //    public int getTabsHeight() {
-    //
-    //        return getHeightWithFixedWidth(R.drawable.tabbar_background, getScreenWidth());
-    //    }
-    //
-    //    public int getTabBarShadeHeight() {
-    //        return getHeightWithFixedWidth(R.drawable.shadow_top, getScreenWidth());
-    //    }
-    //    public int getTabBarHeight() {
-    //        return getTabsHeight() + getTabBarShadeHeight();
-    //    }
+//
+//        return getHeightWithFixedWidth(R.drawable.tabbar_background, getScreenWidth());
+//    }
+//
+//    public int getTabBarShadeHeight() {
+//        return getHeightWithFixedWidth(R.drawable.shadow_top, getScreenWidth());
+//    }
+//    public int getTabBarHeight() {
+//        return getTabsHeight() + getTabBarShadeHeight();
+//    }
     val pageLevelCount: Int
         get() = getPageRowCount() * getPageColumnCount()
 
@@ -258,8 +259,8 @@ class LengthManager(private val context: Context) {
     }
 
     //    public int getPackagesListColumnCount() {
-    //        return Math.min(Math.max((int) (tools.convertPixelsToDp(getScreenWidth()) / 150), 1), 3);
-    //    }
+//        return Math.min(Math.max((int) (tools.convertPixelsToDp(getScreenWidth()) / 150), 1), 3);
+//    }
     fun getLevelFinishedDialogTopPadding(): Int {
         return screenWidth / 30
     }
@@ -285,16 +286,10 @@ class LengthManager(private val context: Context) {
     }
 
     //    public int getPackageIconSize() {
-    //        return getScreenWidth() / getPackagesListColumnCount();
-    //    }
+//        return getScreenWidth() / getPackagesListColumnCount();
+//    }
     fun getPlaceHolderTextSize(): Float {
         return screenWidth / 14f
     }
-
-    //    private Tools tools;
-    init {
-        screenHeight = getScreenHeight(context)
-        screenWidth = getScreenWidth(context)
-        //        tools = new Tools(context);
-    }
+    
 }

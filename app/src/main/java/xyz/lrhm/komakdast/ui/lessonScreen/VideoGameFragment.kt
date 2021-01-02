@@ -31,7 +31,6 @@ import xyz.lrhm.komakdast.core.data.model.Lesson
 import xyz.lrhm.komakdast.core.data.source.AppRepository
 import xyz.lrhm.komakdast.core.util.SizeManager
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager
-import xyz.lrhm.komakdast.core.util.legacy.ImageManager.Companion.getInstance
 import xyz.lrhm.komakdast.core.util.legacy.LengthManager
 import xyz.lrhm.komakdast.core.util.legacy.Tools
 import xyz.lrhm.komakdast.ui.lessonScreen.VideoGameFragmentDirections.Companion.actionVideoGameFragmentSelf
@@ -50,9 +49,6 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
     var keyboardContainer: FrameLayout? = null
     var playerView: PlayerView? = null
     var player: SimpleExoPlayer? = null
-    var lengthManager: LengthManager? = null
-    var imageManager: ImageManager? = null
-    var tools: Tools? = null
     var imageView: ImageView? = null
     var level: Lesson? = null
     var cheatButton: ImageView? = null
@@ -66,13 +62,22 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
 
     val args: VideoGameFragmentArgs by navArgs()
 
-    @JvmField
     @Inject
-    var appRepository: AppRepository? = null
+    lateinit var tools: Tools
 
-    @JvmField
     @Inject
-    var sizeManager: SizeManager? = null
+    lateinit var appRepository: AppRepository
+
+    @Inject
+    lateinit var sizeManager: SizeManager
+
+    @Inject
+    lateinit var imageManager: ImageManager
+
+
+    @Inject
+    lateinit var lengthManager: LengthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -95,9 +100,6 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
 //        imageManager = ((MainApplication) getActivity().getApplication()).getImageManager();
 //        db = DBAdapter.getInstance(getActivity());
 //        coinAdapter = new CoinAdapter(getActivity(), getActivity());
-        lengthManager = LengthManager(requireContext())
-        imageManager = getInstance(requireContext())
-        tools = Tools(requireContext())
 
 //        level = appRepository.getLesson(levelId);
         lastLevelId = appRepository!!.getLastLevelIdForPackage(packageId!!)
@@ -267,7 +269,9 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
                     view.context,
                     i,
                     cheatTitles[i],
-                    ""
+                    "",
+                    imageManager,
+                    lengthManager
                 )
             )
             blackWidow = view.findViewById(R.id.black_widow)
@@ -298,7 +302,8 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
                 override fun Home() {
                     Navigation.findNavController(root!!).navigateUp()
                 }
-            }).show()
+            }, lengthManager
+        ).show()
     }
 
     override fun onAttach(context: Context) {

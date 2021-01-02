@@ -21,11 +21,11 @@ class NextLevelDialog(
     val packageSize: Int,
     val skiped: Boolean,
     val prize: Int,
-    val finishLevel: FinishLevel
+    val finishLevel: FinishLevel,
+    val lengthManager: LengthManager
 ) : Dialog(
     context
 ), View.OnClickListener {
-    private val lengthManager: LengthManager = LengthManager(context)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

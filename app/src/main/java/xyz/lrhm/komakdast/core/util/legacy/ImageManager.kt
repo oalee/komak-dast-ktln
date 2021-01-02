@@ -4,32 +4,33 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
-import android.os.Build
 import android.util.LruCache
 import android.widget.ImageView
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.InputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ImageManager private constructor(context: Context) {
-    private val context: Context
+@Singleton
+class ImageManager @Inject constructor(
+    @ApplicationContext val context: Context,
     private val lengthManager: LengthManager
-    var memoryClass = 0
-        private set
 
-    private fun initCache(context: Context) {
-        if (cacheInited) return
-        cacheInited = true
+) {
+
+    var memoryClass = 0
+    var cache: LruCache<ImageKey, Bitmap> = initCache(context)
+    
+    private fun initCache(context: Context): LruCache<ImageKey, Bitmap> {
+
         val am = context
             .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         memoryClass = am.memoryClass
         val max =
             (memoryClass * 1024 * 1024 * if (memoryClass > 100) 0.80 else 0.666).toInt() // more than 50%
-        cache = object : LruCache<ImageKey, Bitmap>(max) {
+        return object : LruCache<ImageKey, Bitmap>(max) {
             override fun sizeOf(key: ImageKey, value: Bitmap): Int {
-                return if (Build.VERSION.SDK_INT >= 12) {
-                    value.byteCount
-                } else {
-                    value.rowBytes * value.height
-                }
+                return value.byteCount
             }
         }
     }
@@ -275,25 +276,5 @@ class ImageManager private constructor(context: Context) {
         imageView.colorFilter = filter
     }
 
-    companion object {
-        private var cacheInited = false
-        private val getLock = Any()
-        private var instance: ImageManager? = null
 
-        @JvmStatic
-        fun getInstance(context: Context): ImageManager? {
-            synchronized(getLock) {
-                if (instance == null) instance = ImageManager(context)
-                return instance
-            }
-        }
-
-        var cache: LruCache<ImageKey, Bitmap>? = null
-    }
-
-    init {
-        initCache(context)
-        this.context = context
-        lengthManager = LengthManager(context)
-    }
 }
