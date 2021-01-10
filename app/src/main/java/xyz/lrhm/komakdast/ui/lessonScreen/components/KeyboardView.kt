@@ -11,7 +11,6 @@ import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.RelativeLayout
-import dagger.hilt.android.AndroidEntryPoint
 import xyz.lrhm.komakdast.R
 import xyz.lrhm.komakdast.core.util.SizeManager
 import xyz.lrhm.komakdast.core.util.legacy.ImageManager
@@ -21,7 +20,6 @@ import xyz.lrhm.komakdast.core.util.legacy.SizeConverter.Companion.SizeConvertor
 import xyz.lrhm.komakdast.core.util.legacy.SizeConverter.Companion.SizeConvertorFromWidth
 import xyz.lrhm.komakdast.ui.lessonScreen.components.KeyboardView.KeyView
 import java.util.*
-import javax.inject.Inject
 
 /**
  * for whom reads this code , i have wrote this code in my darkest hours
@@ -30,10 +28,14 @@ import javax.inject.Inject
  * may the force be with you
  * use the source luke
  */
-@AndroidEntryPoint
-class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager) :
+class KeyboardView(
+    context: Context,
+    val solution: String,
+    val imageManager: ImageManager,
+    val sizeManager: SizeManager
+) :
     RelativeLayout(context) {
-    @JvmField
+
     var onKeyboardEvent: OnKeyboardEvent? = null
     var answerConverter: SizeConverter
     var buttons: Array<KeyView?>
@@ -45,16 +47,12 @@ class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager
     var swipeView: SwipeView
     var showedData = ""
     var levelAnswer: String
-    @Inject
-    lateinit var imageManager: ImageManager
+
     var buttonConvertor: SizeConverter
-    var solution: String
     var mReaminingLenght: Double
     var mMargin: Int
     private var mListener: OnClickListener? = null
 
-    @Inject
-    lateinit var sizeManager: SizeManager
     fun getAnswersInALine(
         answer: String, context: Context?,
         isTwoLine: Boolean, lineNumber: Int, otherAnswerCount: Int
@@ -881,7 +879,6 @@ class KeyboardView(context: Context?, solution: String, sizeManager: SizeManager
     init {
         var solution = solution
         solution = solution.replace(".", "/")
-        this.solution = solution
         levelAnswer = solution.replace(" ", "").replace("/", "")
         val random = Random(System.currentTimeMillis())
         val string = solution.replace(" ", "").replace("/", "")

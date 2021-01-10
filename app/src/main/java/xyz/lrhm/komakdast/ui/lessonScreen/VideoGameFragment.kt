@@ -128,7 +128,8 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
             keyboardContainer =
                 view.findViewById<View>(R.id.fragment_game_keyboard_container) as FrameLayout
             keyboardContainer!!.visibility = View.VISIBLE
-            keyboardView = KeyboardView(context, level!!.answer!!, sizeManager!!)
+            keyboardView =
+                KeyboardView(requireContext(), level!!.answer!!, imageManager, sizeManager)
             keyboardView!!.onKeyboardEvent = this
             keyboardContainer!!.addView(keyboardView)
             Glide.with(this).load(R.drawable.cheat_button).into(cheatButton!!)
