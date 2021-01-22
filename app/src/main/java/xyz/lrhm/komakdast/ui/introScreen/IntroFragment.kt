@@ -7,13 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import xyz.lrhm.komakdast.R
+import xyz.lrhm.komakdast.core.util.SizeManager
 import xyz.lrhm.komakdast.databinding.FragmentIntroBinding
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class IntroFragment : Fragment() {
 
     lateinit var binding: FragmentIntroBinding
+
+    @Inject
+    lateinit var sizeManager: SizeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +29,7 @@ class IntroFragment : Fragment() {
 
         binding = FragmentIntroBinding.inflate(inflater, container, false)
 
+//        binding.container.layoutParams.height = sizeManager.deviceHeight
 
         Glide.with(this).load(R.drawable.package_0)
             .into(binding.imageView6)
