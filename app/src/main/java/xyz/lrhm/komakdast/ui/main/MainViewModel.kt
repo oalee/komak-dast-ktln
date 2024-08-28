@@ -1,14 +1,17 @@
 package xyz.lrhm.komakdast.ui.main
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.source.AppRepository
 import xyz.lrhm.komakdast.core.data.source.PreferenceRepository
 import xyz.lrhm.komakdast.core.util.LocalUtil
 import xyz.lrhm.komakdast.core.util.SizeManager
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+
+@HiltViewModel
+class MainViewModel @Inject constructor(
     val appRepository: AppRepository,
     val preferenceRepository: PreferenceRepository,
     val localUtil: LocalUtil, val sizeManager: SizeManager

@@ -1,17 +1,19 @@
 package xyz.lrhm.komakdast.ui.loadingScreen
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.lrhm.komakdast.core.data.source.AppRepository
 import xyz.lrhm.komakdast.core.data.source.PreferenceRepository
 import xyz.lrhm.komakdast.core.util.LocalUtil
+import javax.inject.Inject
 
-class LoadingViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LoadingViewModel @Inject constructor(
     val appRepository: AppRepository,
     val preferenceRepository: PreferenceRepository,
     val localUtil: LocalUtil

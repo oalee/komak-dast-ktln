@@ -1,32 +1,41 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.4.21"
-    ext.navVersion = "2.3.2"
-    ext.hiltVersion = "2.29.1-alpha"
+    ext.kotlinVersion = "1.9.0"
+    ext.navVersion = "2.5.0"
+    ext.hiltVersion = "2.48"
 
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "com.android.tools.build:gradle:8.5.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
-        classpath 'com.google.gms:google-services:4.3.4'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
     }
 
 
+
+
 }
+
+plugins {
+
+    id 'com.google.dagger.hilt.android' version '2.48' apply false
+}
+
 
 allprojects {
     repositories {
         google()
         jcenter()
     }
+
 }
 
 task clean(type: Delete) {
@@ -35,7 +44,7 @@ task clean(type: Delete) {
 
 ext {
     // The following are only a few examples of the types of properties you can define.
-    compileSdkVersion = 30
+    compileSdkVersion = 34
     // You can also use this to specify versions for dependencies. Having consistent
     // versions between modules can avoid behavior conflicts.
     supportLibVersion = "28.0.0"
@@ -49,7 +58,7 @@ ext {
     dataStoreVersion = "1.0.0-alpha05"
     coroutinesVersion = "1.4.2"
     daggerVersion = "2.29.1"
-    hiltKtxVersion = "1.0.0-alpha02"
+    hiltKtxVersion = "1.0.0-alpha03"
     moshiVersion = "1.11.0"
     multidexVersion = "2.0.1"
     glideVersion = "4.11.0"

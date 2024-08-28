@@ -1,24 +1,24 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
+    id 'com.google.dagger.hilt.android'
+
 
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 34
+    namespace "xyz.lrhm.komakdast"
 
     defaultConfig {
-        applicationId "xyz.lrhm.komakdast"
         minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 14
-        versionName "1.14"
+        targetSdkVersion 34
+        versionCode 15
+        versionName "1.15"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -52,6 +52,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes true
+}
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -71,8 +75,12 @@ dependencies {
     implementation "androidx.datastore:datastore:$dataStoreVersion"
     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltKtxVersion"// When using Kotlin.
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+
+//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltKtxVersion"// When using Kotlin.
 
 
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
@@ -87,7 +95,7 @@ dependencies {
 
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
@@ -102,7 +110,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.3'
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 
 
     // optional - Kotlin Extensions and Coroutines support for Room

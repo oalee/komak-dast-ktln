@@ -16,6 +16,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
+            android:exported="true"
             android:name="xyz.lrhm.komakdast.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>

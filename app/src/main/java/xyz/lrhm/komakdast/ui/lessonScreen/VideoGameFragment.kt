@@ -18,7 +18,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -48,7 +48,7 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
     var keyboardView: KeyboardView? = null
     var keyboardContainer: FrameLayout? = null
     var playerView: PlayerView? = null
-    var player: SimpleExoPlayer? = null
+    var player: ExoPlayer? = null
     var imageView: ImageView? = null
     var level: Lesson? = null
     var cheatButton: ImageView? = null
@@ -193,15 +193,17 @@ class VideoGameFragment : Fragment(), OnKeyboardEvent, View.OnClickListener {
     }
 
     fun initExoPlayer() {
-        player = ExoPlayerFactory.newSimpleInstance(context)
+        player = ExoPlayer.Builder(requireContext()).build()
         playerView!!.player = player
         val dataSourceFactory = DefaultDataSourceFactory(
-            context,
-            Util.getUserAgent(context, "nashenavayan")
+            requireContext(),
+            Util.getUserAgent(requireContext(), "nashenavayan")
         )
         val mediaUri = Uri.parse(level!!.getVideoPath())
         val mediaSource =
-            ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri)
+            ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
+                MediaItem.fromUri(mediaUri)
+            )
         player!!.prepare(mediaSource)
         player!!.setPlayWhenReady(true)
         player!!.setRepeatMode(ExoPlayer.REPEAT_MODE_ALL)
